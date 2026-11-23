@@ -1,26 +1,47 @@
-# Content Alignment for unsupervised domain adaptation
-
-Code for **"Unsupervised Domain Adaptation via Content Alignment for Hippocampus Segmentation"**,
-Hoda Kalabizadeh, Ludovica Griffanti, Pak-Hei Yeung, Ana I. L. Namburete, Nicola K. Dinsdale and
-Konstantinos Kamnitsas, ICCV Workshops 2025 ([arXiv:2510.13075](https://arxiv.org/abs/2510.13075),
-[doi:10.1109/ICCVW69036.2025.00119](https://doi.org/10.1109/ICCVW69036.2025.00119)).
+# Unsupervised Domain Adaptation via Content Alignment for Hippocampus Segmentation
 
 <p align="center">
-  <img src="figures/framework.png" width="80%" alt="Framework overview">
+  <img src="figures/framework.png" width="85%" alt="Framework overview">
 </p>
 
-Content Alignment (CA) adapts a segmenter from a labelled source domain to an unlabelled target
-domain by addressing two kinds of shift separately:
+This repository contains the codes (in PyTorch) for the framework introduced in the following paper:
 
-- **Style** (intensity) shift is reduced by preprocessing: histogram standardisation, z-normalisation
-  and a crop to the region of interest.
-- **Content** (shape) shift is reduced by registration. A bidirectional diffeomorphic registration
-  network **R** warps each source image and its label towards a target image. It is trained jointly with:
+**"Unsupervised Domain Adaptation via Content Alignment for Hippocampus Segmentation"**
+[[Paper]]([arXiv:2510.13075](https://arxiv.org/abs/2510.13075),
+[doi:10.1109/ICCVW69036.2025.00119](https://doi.org/10.1109/ICCVW69036.2025.00119)) [[Project Page]](https://hodakalabizadeh.github.io/projects/content-alignment/)
+
+Content Alignment (CA) is an unsupervised domain adaptation method for segmentation across domains — a labelled source and an unlabelled target. It bridges the domain gap in image space, addressing two kinds of shift separately:
+
+- **Style** (intensity) shift is reduced by preprocessing: histogram standardisation and z-normalisation.
+- **Content** (anatomy) shift is reduced by a bidirectional diffeomorphic registration
+  network **R**, which warps each source image and its label towards a target image. It is trained jointly with:
   - a discriminator **D**, which pushes warped source images to look like target images;
   - a segmenter **S**, trained on the source only, which pushes the warped images to stay segmentable.
 
 The warped source images and labels then train a downstream segmenter, which is evaluated on the
 target domain. Target labels are never used for training or for model selection.
+
+
+## Citation
+
+```bibtex
+@inproceedings{kalabizadeh2025content,
+  title     = {Unsupervised Domain Adaptation via Content Alignment for Hippocampus Segmentation},
+  author    = {Kalabizadeh, Hoda and Griffanti, Ludovica and Yeung, Pak-Hei and Namburete, Ana I. L. and
+               Dinsdale, Nicola K. and Kamnitsas, Konstantinos},
+  booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision Workshops (ICCVW)},
+  year      = {2025},
+  doi       = {10.1109/ICCVW69036.2025.00119}
+}
+```
+
+
+## Contents
+  1. [Repository layout](#repo-layout)
+  2. [Installation](#installation)
+  3. [Data](#data)
+  4. [Running](#running)
+   
 
 ## Repository layout
 
@@ -94,19 +115,6 @@ downstream seeds. Outputs go to `outputs/<config>/<run-name>/`.
   evaluated as the mean over the k fold models. Outputs of each downstream seed go to
   `downstream_seed<seed>/`.
 
-
-## Citation
-
-```bibtex
-@inproceedings{kalabizadeh2025content,
-  title     = {Unsupervised Domain Adaptation via Content Alignment for Hippocampus Segmentation},
-  author    = {Kalabizadeh, Hoda and Griffanti, Ludovica and Yeung, Pak-Hei and Namburete, Ana I. L. and
-               Dinsdale, Nicola K. and Kamnitsas, Konstantinos},
-  booktitle = {Proceedings of the IEEE/CVF International Conference on Computer Vision Workshops (ICCVW)},
-  year      = {2025},
-  doi       = {10.1109/ICCVW69036.2025.00119}
-}
-```
 
 ## License
 
