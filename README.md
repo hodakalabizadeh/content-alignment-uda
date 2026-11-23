@@ -12,9 +12,9 @@ Konstantinos Kamnitsas, ICCV Workshops 2025 ([arXiv:2510.13075](https://arxiv.or
 Content Alignment (CA) adapts a segmenter from a labelled source domain to an unlabelled target
 domain by addressing two kinds of shift separately:
 
-- **Style** (intensity) shift is removed by preprocessing: histogram standardisation, z-normalisation
+- **Style** (intensity) shift is reduced by preprocessing: histogram standardisation, z-normalisation
   and a crop to the region of interest.
-- **Content** (shape) shift is removed by registration. A bidirectional diffeomorphic registration
+- **Content** (shape) shift is reduced by registration. A bidirectional diffeomorphic registration
   network **R** warps each source image and its label towards a target image. It is trained jointly with:
   - a discriminator **D**, which pushes warped source images to look like target images;
   - a segmenter **S**, trained on the source only, which pushes the warped images to stay segmentable.
