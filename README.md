@@ -7,19 +7,7 @@
 This repository contains the codes (in PyTorch) for the framework introduced in the following paper:
 
 **"Unsupervised Domain Adaptation via Content Alignment for Hippocampus Segmentation"**
-[[Paper]]([arXiv:2510.13075](https://arxiv.org/abs/2510.13075),
-[doi:10.1109/ICCVW69036.2025.00119](https://doi.org/10.1109/ICCVW69036.2025.00119)) [[Project Page]](https://hodakalabizadeh.github.io/projects/content-alignment/)
-
-Content Alignment (CA) is an unsupervised domain adaptation method for segmentation across domains — a labelled source and an unlabelled target. It bridges the domain gap in image space, addressing two kinds of shift separately:
-
-- **Style** (intensity) shift is reduced by preprocessing: histogram standardisation and z-normalisation.
-- **Content** (anatomy) shift is reduced by a bidirectional diffeomorphic registration
-  network **R**, which warps each source image and its label towards a target image. It is trained jointly with:
-  - a discriminator **D**, which pushes warped source images to look like target images;
-  - a segmenter **S**, trained on the source only, which pushes the warped images to stay segmentable.
-
-The warped source images and labels then train a downstream segmenter, which is evaluated on the
-target domain. Target labels are never used for training or for model selection.
+[[Paper]](https://arxiv.org/abs/2510.13075) | [[Project Page]](https://hodakalabizadeh.github.io/projects/content-alignment/)
 
 
 ## Citation
@@ -37,10 +25,23 @@ target domain. Target labels are never used for training or for model selection.
 
 
 ## Contents
-  1. [Repository layout](#repo-layout)
-  2. [Installation](#installation)
-  3. [Data](#data)
-  4. [Running](#running)
+  1. [Overview](#overview)
+  2. [Repository layout](#repo-layout)
+  3. [Installation](#installation)
+  4. [Data](#data)
+  5. [Running](#running)
+
+## Overview
+Content Alignment (CA) is an unsupervised domain adaptation method for segmentation across domains — a labelled source and an unlabelled target. It bridges the domain gap in image space, addressing two kinds of shift separately:
+
+- **Style** (intensity) shift is reduced by preprocessing: histogram standardisation and z-normalisation.
+- **Content** (anatomy) shift is reduced by a bidirectional diffeomorphic registration
+  network **R**, which warps each source image and its label towards a target image. It is trained jointly with:
+  - a discriminator **D**, which pushes warped source images to look like target images;
+  - a segmenter **S**, trained on the source only, which pushes the warped images to stay segmentable.
+
+The warped source images and labels then train a downstream segmenter, which is evaluated on the
+target domain. Target labels are never used for training or for model selection.
    
 
 ## Repository layout
