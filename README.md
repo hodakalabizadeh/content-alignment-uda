@@ -1,5 +1,7 @@
 # Content Alignment for unsupervised domain adaptation
 
+![Framework overview](figures/framework.png)
+
 Code for **"Unsupervised Domain Adaptation via Content Alignment for Hippocampus Segmentation"**,
 Hoda Kalabizadeh, Ludovica Griffanti, Pak-Hei Yeung, Ana I. L. Namburete, Nicola K. Dinsdale and
 Konstantinos Kamnitsas, ICCV Workshops 2025 ([arXiv:2510.13075](https://arxiv.org/abs/2510.13075),
