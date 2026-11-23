@@ -4,7 +4,7 @@
   <img src="figures/framework.png" width="85%" alt="Framework overview">
 </p>
 
-This repository contains the codes (in PyTorch) for the framework introduced in the following paper:
+This repository contains the code (in PyTorch) for the framework introduced in the following paper:
 
 Unsupervised Domain Adaptation via Content Alignment for Hippocampus Segmentation
 [[Paper]](https://arxiv.org/abs/2510.13075) | [[Project Page]](https://hodakalabizadeh.github.io/projects/content-alignment/)
@@ -84,9 +84,9 @@ datasets there, or set `data_root` to your data folder. The train/test image and
 under `data:`, relative to `data_root`. Each volume is then:
 
 1. histogram-standardised over the brain (voxels above 10% of the volume's 99th percentile), with
-   landmarks fitted on the source and target training volumes together;
-2. z-normalised over the brain;
-3. cropped to a (96, 128, 80) hippocampal region of interest.
+   landmarks fitted on the source and target training volumes together
+2. z-normalised over the brain
+3. cropped to a (96, 128, 80) hippocampal region of interest
 
 
 ## Running
