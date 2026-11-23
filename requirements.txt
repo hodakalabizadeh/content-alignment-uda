@@ -1,0 +1,12 @@
+# Tested with Python 3.11, PyTorch 2.0.1 (CUDA 11.7) on an NVIDIA A10 GPU.
+torch>=2.0
+torchvision>=0.15
+torchio>=0.19
+nibabel>=5.1
+scikit-learn>=1.2
+pandas>=1.5
+numpy>=1.25,<2
+tqdm>=4.66
+pyyaml>=6.0
+opencv-python>=4.10        # Morpho-MNIST rendering only
+surface-distance @ git+https://github.com/google-deepmind/surface-distance.git

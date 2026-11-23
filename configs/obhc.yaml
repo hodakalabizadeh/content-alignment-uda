@@ -1,0 +1,41 @@
+# DRYAD (source) -> OBHC (target) hippocampus segmentation, 3D MRI.
+dataset: mri                                    # data module in ca_core/datasets/
+data_root: data                                 # your data folder (absolute, or relative to the repository root)
+data:
+  train:                                        # used for CA training, downstream training and CA evaluation
+    source_images: DRYADS/dryads_mni_extrc_train
+    source_labels: DRYADS/dryads_mni_labels_train/combined_labels
+    target_images: OBHC/OBHC_train_imgs
+    target_labels: OBHC/OBHC_train_labels/combined_labels
+  test:                                         # held out; used only to evaluate the downstream segmenter
+    source_images: DRYADS/dryads_mni_extrc_test
+    source_labels: DRYADS/dryads_mni_labels_test/combined_labels
+    target_images: OBHC/OBHC_test_imgs
+    target_labels: OBHC/OBHC_test_labels/combined_labels
+  pairing: all                                  # every source x target combination
+
+ca:                                             # Content Alignment (R + D + S) training
+  folds: 3                                      # k-fold CV of CA; the fold with the lowest validation loss is used downstream
+  epochs: 1500
+  patience: 30                                  # early stopping, on R's validation loss
+  batch_size: 1
+  amp: true                                     # mixed precision
+  fused_adam: true                              # fused Adam kernel for R's optimiser
+  lr_scheduler_patience: 30                     # ReduceLROnPlateau on R's learning rate (null: none)
+  int_steps: 7                                  # scaling-and-squaring steps
+  lambda: {sim: 0.1, smooth: 1.0, disc: 1.0e-4, seg: 1.0}
+  lr: {reg: 1.0e-4, disc: 3.0e-4, seg: 1.0e-3}
+  eval_batch_size: 5
+
+downstream:                                     # segmenter trained on CA-aligned source data
+  folds: 3                                      # k-fold CV of the downstream segmenter
+  epochs: 500
+  patience: 30
+  batch_size: 1
+  lr: 1.0e-3
+  lr_scheduler_patience: 10
+  split_hemispheres: true                       # segment each hemisphere separately
+  draw_fold_seed: true                          # as trained: KFold's random_state drawn from the seeded RNG
+  val_amp: true
+  val_drop_last: true
+  eval_batch_size: 5

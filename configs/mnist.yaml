@@ -1,0 +1,34 @@
+# Morpho-MNIST thick (source) -> thin (target) digits, rendered MNIST-M style, 2D.
+dataset: mnist                                  # data module in ca_core/datasets/
+data_root: data/mnist                           # Morpho-MNIST styles (<style>/*-idx*-ubyte.gz) + CIFAR-10
+data:
+  source_style: thic
+  target_style: thin
+  digit: 0
+  noise_std: 0.05                               # Gaussian noise added to the rendered images
+
+ca:                                             # Content Alignment (R + D + S) training
+  folds: 3                                      # k-fold CV of CA; the fold with the lowest validation loss is used downstream
+  epochs: 500
+  patience: 100                                 # early stopping, on R's validation loss
+  batch_size: 64
+  amp: false
+  fused_adam: false
+  lr_scheduler_patience: null                   # no learning-rate scheduler
+  int_steps: 7
+  lambda: {sim: 1.0, smooth: 1.0e-3, disc: 1.0e-4, seg: 0.01}
+  lr: {reg: 1.0e-4, disc: 3.0e-4, seg: 1.0e-3}
+  eval_batch_size: null                         # null: all pairs in one batch
+
+downstream:                                     # segmenter trained on CA-aligned source data
+  folds: 3                                      # k-fold CV of the downstream segmenter
+  epochs: 100
+  patience: 50
+  batch_size: 64
+  lr: 1.0e-3
+  lr_scheduler_patience: 10
+  split_hemispheres: false
+  draw_fold_seed: false
+  val_amp: false
+  val_drop_last: false
+  eval_batch_size: 64

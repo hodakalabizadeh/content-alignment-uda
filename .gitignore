@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+.ipynb_checkpoints/
+
+# Data (never committed)
+/data/
+*.nii
+*.nii.gz
+*.gz
+*.npy
+*.h5
+
+# Run outputs: checkpoints, configs used, evaluation tables, Slurm logs
+outputs/
+outputs_archive/
+*.pt
+*.pth
+*.out
+*.csv
+
+# Exception: the MNI template is distributed with the code (own licence: ca_core/datasets/MNI152_template_NOTICE.md)
+!ca_core/datasets/MNI152_template.nii.gz
