@@ -6,7 +6,7 @@
 
 This repository contains the codes (in PyTorch) for the framework introduced in the following paper:
 
-**"Unsupervised Domain Adaptation via Content Alignment for Hippocampus Segmentation"**
+Unsupervised Domain Adaptation via Content Alignment for Hippocampus Segmentation
 [[Paper]](https://arxiv.org/abs/2510.13075) | [[Project Page]](https://hodakalabizadeh.github.io/projects/content-alignment/)
 
 
