@@ -5,12 +5,12 @@ Hoda Kalabizadeh, Ludovica Griffanti, Pak-Hei Yeung, Ana I. L. Namburete, Nicola
 Konstantinos Kamnitsas, ICCV Workshops 2025 ([arXiv:2510.13075](https://arxiv.org/abs/2510.13075),
 [doi:10.1109/ICCVW69036.2025.00119](https://doi.org/10.1109/ICCVW69036.2025.00119)).
 
+<p align="center">
+  <img src="figures/framework.png" width="80%" alt="Framework overview">
+</p>
+
 Content Alignment (CA) adapts a segmenter from a labelled source domain to an unlabelled target
 domain by addressing two kinds of shift separately:
-
-<p align="center">
-  <img src="figures/framework.png" width="70%" alt="Framework overview">
-</p>
 
 - **Style** (intensity) shift is removed by preprocessing: histogram standardisation, z-normalisation
   and a crop to the region of interest.
