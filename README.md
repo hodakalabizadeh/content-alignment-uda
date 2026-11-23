@@ -1,7 +1,5 @@
 # Content Alignment for unsupervised domain adaptation
 
-![Framework overview](figures/framework.png)
-
 Code for **"Unsupervised Domain Adaptation via Content Alignment for Hippocampus Segmentation"**,
 Hoda Kalabizadeh, Ludovica Griffanti, Pak-Hei Yeung, Ana I. L. Namburete, Nicola K. Dinsdale and
 Konstantinos Kamnitsas, ICCV Workshops 2025 ([arXiv:2510.13075](https://arxiv.org/abs/2510.13075),
@@ -9,6 +7,10 @@ Konstantinos Kamnitsas, ICCV Workshops 2025 ([arXiv:2510.13075](https://arxiv.or
 
 Content Alignment (CA) adapts a segmenter from a labelled source domain to an unlabelled target
 domain by addressing two kinds of shift separately:
+
+<p align="center">
+  <img src="figures/framework.png" width="70%" alt="Framework overview">
+</p>
 
 - **Style** (intensity) shift is removed by preprocessing: histogram standardisation, z-normalisation
   and a crop to the region of interest.
