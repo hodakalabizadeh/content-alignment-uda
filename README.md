@@ -92,6 +92,10 @@ under `data:`, relative to `data_root`. Each volume is then:
 
 ### Morpho-MNIST (2D demo)
 
+<p align="center">
+  <img src="figures/MNIST_Example_4.png" width="85%" alt="Framework overview">
+</p>
+
 The 2D experiment (`configs/mnist.yaml`, thick → thin digits rendered MNIST-M style) is the one you can run
 end to end without the clinical MRI data. Fetch its two Morpho-MNIST styles (`thic` source, `thin` target)
 into `data/mnist/`:
