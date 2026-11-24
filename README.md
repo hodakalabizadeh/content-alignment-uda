@@ -32,16 +32,18 @@ Unsupervised Domain Adaptation via Content Alignment for Hippocampus Segmentatio
   5. [Running](#running)
 
 ## Overview
-Content Alignment (CA) is an unsupervised domain adaptation method for segmentation across domains — a labelled source and an unlabelled target. It bridges the domain gap in image space, addressing two kinds of shift separately:
 
-- **Style** (intensity) shift is reduced by preprocessing: histogram standardisation and z-normalisation.
-- **Content** (anatomy) shift is reduced by a bidirectional diffeomorphic registration
-  network **R**, which warps each source image and its label towards a target image. It is trained jointly with:
-  - a discriminator **D**, which pushes warped source images to look like target images;
-  - a segmenter **S**, trained on the source only, which pushes the warped images to stay segmentable.
+We propose an image-space unsupervised domain adaptation (UDA) framework for segmentation across a **labelled source** and an **unlabelled target** domain. The framework addresses two types of domain shift: **style** (image intensity and appearance) and **content** (anatomical differences between populations).
 
-The warped source images and labels then train a downstream segmenter, which is evaluated on the
-target domain. Target labels are never used for training or for model selection.
+The framework consists of three stages:
+
+1. **Style Alignment:** Histogram standardisation and z-normalisation are applied to reduce intensity differences between domains.
+
+2. **Content Alignment (CA):** A bidirectional diffeomorphic registration network **R** learns anatomical transformations between source and target images. It is jointly trained with:
+   - A discriminator **D**, which encourages warped source images to resemble target images.
+   - A segmenter **S**, which provides segmentation-based feedback to guide registration towards anatomically relevant regions.
+
+3. **Downstream Segmentation:** The trained registration network is used to warp source images and their corresponding labels towards the target domain. These transformed image-label pairs are then used to train a downstream segmentation model, which is evaluated on unseen target images.
    
 
 ## Repository layout
