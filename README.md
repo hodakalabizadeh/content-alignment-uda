@@ -90,6 +90,22 @@ under `data:`, relative to `data_root`. Each volume is then:
 2. z-normalised over the brain
 3. cropped to a (96, 128, 80) hippocampal region of interest
 
+### Morpho-MNIST (2D demo)
+
+The 2D experiment (`configs/mnist.yaml`, thick → thin digits rendered MNIST-M style) is the one you can run
+end to end without the clinical MRI data. Fetch its two Morpho-MNIST styles (`thic` source, `thin` target)
+into `data/mnist/`:
+
+```bash
+python scripts/download_data.py          # ~22 MB; verifies each file's SHA-256
+```
+
+CIFAR-10 and raw MNIST are downloaded automatically by torchvision on first run, so they need no action. The
+Morpho-MNIST data is redistributed from [Morpho-MNIST](https://github.com/dccastro/Morpho-MNIST) (MIT
+License); if you use it, please also cite Castro et al., *Morpho-MNIST: Quantitative Assessment and
+Diagnostics for Representation Learning*, JMLR 20(178), 2019. If the release asset is unavailable, the script
+prints the official download links as a fallback.
+
 
 ## Running
 
@@ -123,3 +139,5 @@ downstream seeds. Outputs go to `outputs/<config>/<run-name>/`.
 
 MIT; see [LICENSE](LICENSE). The MNI template in `ca_core/datasets/` is distributed under its own notice
 (McConnell Brain Imaging Centre); see [MNI152_template_NOTICE.md](ca_core/datasets/MNI152_template_NOTICE.md).
+The Morpho-MNIST data fetched by `scripts/download_data.py` is redistributed from
+[Morpho-MNIST](https://github.com/dccastro/Morpho-MNIST) under the MIT License (© 2019 Daniel C. Castro et al.).
