@@ -9,4 +9,5 @@ numpy>=1.25,<2
 tqdm>=4.66
 pyyaml>=6.0
 opencv-python>=4.10        # Morpho-MNIST rendering only
-surface-distance @ git+https://github.com/google-deepmind/surface-distance.git
+# tarball (not git+https) so pip downloads it over its own HTTPS, with no dependency on a working system `git`
+surface-distance @ https://github.com/google-deepmind/surface-distance/archive/refs/heads/master.tar.gz
