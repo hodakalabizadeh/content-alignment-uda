@@ -90,6 +90,15 @@ under `data:`, relative to `data_root`. Each volume is then:
 2. z-normalised over the brain
 3. cropped to a (96, 128, 80) hippocampal region of interest
 
+This preprocessing is done once, before training, and saved under `data.preprocessed_dir`
+(`preprocessed/<config>/`): landmarks are fitted per data split (train, test) and every volume and label is stored as a ready-to-use array, so the training and evaluation scripts never re-read the NIfTIs:
+
+```bash
+python scripts/preprocess_mri.py --config configs/obhc.yaml   # train and test splits; a no-op when up to date
+```
+
+The scripts check that the saved data match the config's files and preprocessing, and ask you to rerun this step if not. Remove `preprocessed_dir` from a config to preprocess in memory at the start of every run instead.
+
 ### Morpho-MNIST (2D demo)
 
 <p align="center">
@@ -116,14 +125,15 @@ prints the official download links as a fallback.
 From the repository root, with `PYTHONPATH` set to it:
 
 ```bash
+python scripts/preprocess_mri.py          --config configs/obhc.yaml                 # once: preprocess and save the MRI data
 python scripts/train_content_alignment.py --config configs/obhc.yaml --run-name ca   # train R + D + S, every CA fold
 python scripts/eval_content_alignment.py  --config configs/obhc.yaml --run-name ca   # label propagation on the training data
 python scripts/train_downstream_seg.py    --config configs/obhc.yaml --run-name ca   # segmenter on CA-aligned source data
 python scripts/eval_downstream_seg.py     --config configs/obhc.yaml --run-name ca   # Dice etc. on the target test set
 ```
 
-On a Slurm cluster, `bash scripts/slurm/run_all.sh obhc ca` submits the stages as chained jobs, with one
-job per CA fold; `bash scripts/slurm/run_all.sh obhc ca_s43 43 "42 43 44"` uses CA seed 43 and three
+On a Slurm cluster, `bash scripts/slurm/run_all.sh obhc ca` submits the stages as chained jobs (starting
+with the preprocessing), with one job per CA fold; `bash scripts/slurm/run_all.sh obhc ca_s43 43 "42 43 44"` uses CA seed 43 and three
 downstream seeds. Outputs go to `outputs/<config>/<run-name>/`.
 
 - **Ablations:** `--lambda-disc 0` and/or `--lambda-seg 0` switch off D and/or S.

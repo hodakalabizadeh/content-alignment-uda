@@ -13,6 +13,7 @@ data:
     target_images: OBHC/OBHC_test_imgs
     target_labels: OBHC/OBHC_test_labels/combined_labels
   pairing: all                                  # every source x target combination
+  preprocessed_dir: preprocessed/obhc           # written by scripts/preprocess_mri.py (unset: preprocess in memory)
 
 ca:                                             # Content Alignment (R + D + S) training
   folds: 3                                      # k-fold CV of CA; the fold with the lowest validation loss is used downstream

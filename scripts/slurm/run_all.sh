@@ -1,6 +1,7 @@
 #!/bin/bash
 # Submit the whole pipeline for one config as chained Slurm jobs, each starting only if the jobs it
 # needs succeeded:
+#   [MRI configs with data.preprocessed_dir: preprocess the data once] ->
 #   train CA, one job per fold (in parallel) -> evaluate CA (all folds)
 #                                            -> train downstream on the CA fold with the lowest validation
 #                                               loss, one job per downstream seed -> evaluate downstream
@@ -23,9 +24,14 @@ submit() {  # submit <after job ids, colon-separated, or ""> <stage> <job-name s
     sbatch --parsable --job-name="${cfg}_${run}_$2$3" ${1:+--dependency=afterok:$1} \
         "scripts/slurm/$2.sh" "$cfg" --run-name "$run" "${@:4}"
 }
+j_pre=""  # the preprocessing job, if the config saves its preprocessing (a no-op when it is up to date)
+if python -c "import sys, yaml; sys.exit(not yaml.safe_load(open('configs/$cfg.yaml'))['data'].get('preprocessed_dir'))"; then
+    j_pre=$(sbatch --parsable --job-name="${cfg}_preprocess" scripts/slurm/preprocess_mri.sh "$cfg")
+    echo "Submitted ${cfg}: preprocess $j_pre"
+fi
 ca_jobs=()
 for ((k = 0; k < folds; k++)); do
-    ca_jobs+=("$(submit "" train_content_alignment "_f$k" --fold "$k" --seed "$seed" ${ca_flags[@]+"${ca_flags[@]}"})")
+    ca_jobs+=("$(submit "$j_pre" train_content_alignment "_f$k" --fold "$k" --seed "$seed" ${ca_flags[@]+"${ca_flags[@]}"})")
 done
 all_ca=$(IFS=:; echo "${ca_jobs[*]}")
 j_eval_ca=$(submit "$all_ca" eval_content_alignment "" --seed "$seed")

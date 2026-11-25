@@ -14,6 +14,7 @@ data:
     target_labels: HARP/HARP_test_labels/combined_labels
     exclude_file: HARP/excluded_subjects.txt    # test subjects left out, one ID per line
   pairing: random                               # one random source per target volume
+  preprocessed_dir: preprocessed/harp           # written by scripts/preprocess_mri.py (unset: preprocess in memory)
 
 ca:                                             # Content Alignment (R + D + S) training
   folds: 3                                      # k-fold CV of CA; the fold with the lowest validation loss is used downstream
