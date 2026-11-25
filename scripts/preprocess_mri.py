@@ -1,6 +1,6 @@
 """Preprocess the MRI data once and save it, so training and evaluation read arrays instead of NIfTIs.
 
-Offline, nnU-Net-style preprocessing for the 3D configs (obhc.yaml, harp.yaml). For each data split
+Offline preprocessing for the 3D configs (obhc.yaml, harp.yaml). For each data split
 (train, test), histogram-standardisation landmarks are fitted once on all source and target volumes of the
 split (minus excluded subjects); every volume is then histogram-standardised, z-normalised and cropped to the
 hippocampal ROI, every label cropped and binarised, and the arrays are saved under
