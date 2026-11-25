@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 import surface_distance as s_d
 import torch
-from torch.cuda.amp import autocast
+from torch.amp import autocast
 
 from .models.segmentation import SegmentationUNet
 
@@ -88,7 +88,7 @@ def register(reg_model, dataloader, device, amp=False):
     targets, warped = [], []
     with torch.no_grad():
         for source, target, source_label, target_label in dataloader:
-            with autocast(enabled=amp):
+            with autocast('cuda', enabled=amp):
                 _, _, source_to_target_label, _, _ = reg_model(
                     source.to(device).float(), target.to(device).float(), source_label.to(device).float())
             warped.append(source_to_target_label.cpu())
@@ -100,7 +100,7 @@ def load_segmenter(checkpoint, in_shape, in_channels, nb_features=(4, 8, 16, 32)
     """Load one trained downstream segmenter (e.g. <experiment>/model_params/unet_fold{i}.pt) on the CPU."""
     model = SegmentationUNet(in_shape=in_shape, infeatures=in_channels, outfeatures=2,
                              nb_features=list(nb_features), max_pool=2)
-    model.load_state_dict(torch.load(checkpoint, map_location='cpu'))
+    model.load_state_dict(torch.load(checkpoint, map_location='cpu', weights_only=True))
     return model
 
 

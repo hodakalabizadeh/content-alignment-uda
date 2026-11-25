@@ -22,7 +22,7 @@ import numpy as np
 import surface_distance as s_d
 import torch
 import torch.nn as nn
-from torch.cuda.amp import autocast
+from torch.amp import autocast
 from tqdm import tqdm
 
 from ..models.discriminator import Discriminator, initialize_weights
@@ -96,7 +96,7 @@ def train_ca_epoch(reg_model, disc_model, seg_model, dataloader, reg_optim, disc
         batches += 1
         source, target, source_label = _to_device(device, source, target, source_label)
 
-        with autocast(enabled=amp):
+        with autocast('cuda', enabled=amp):
             source_to_target_img, pos_field, _, target_to_source_img, neg_field = \
                 reg_model(source, target, source_label)
 
@@ -110,14 +110,14 @@ def train_ca_epoch(reg_model, disc_model, seg_model, dataloader, reg_optim, disc
         # --- S step (source domain only) ---
         if lam_seg > 0:
             seg_optim.zero_grad()
-            with autocast(enabled=amp):
+            with autocast('cuda', enabled=amp):
                 loss_seg = seg_loss_func(seg_model(source), source_label)
             scaler.scale(loss_seg).backward()
             _step(scaler, seg_optim)
 
         # --- R step ---
         reg_optim.zero_grad()
-        with autocast(enabled=amp):
+        with autocast('cuda', enabled=amp):
             reg_loss = _registration_image_loss(source, target, source_to_target_img, target_to_source_img,
                                                 pos_field, neg_field, lam_sim, lam_smooth)
             if lam_seg > 0:
@@ -159,7 +159,7 @@ def validate_ca(reg_model, disc_model, seg_model, dataloader, disc_loss_func, se
             batches += 1
             source, target, source_label, target_label = _to_device(device, *batch)
 
-            with autocast(enabled=amp):
+            with autocast('cuda', enabled=amp):
                 source_to_target_img, pos_field, source_to_target_label, target_to_source_img, neg_field = \
                     reg_model(source, target, source_label)
 
@@ -174,10 +174,10 @@ def validate_ca(reg_model, disc_model, seg_model, dataloader, disc_loss_func, se
                 totals['disc_loss'] += _disc_loss(disc_model, disc_loss_func, target, source_to_target_img).item()
 
             if lam_seg > 0:
-                with autocast(enabled=amp):
+                with autocast('cuda', enabled=amp):
                     totals['seg_loss'] += seg_loss_func(seg_model(source), source_label).item()
 
-            with autocast(enabled=amp):
+            with autocast('cuda', enabled=amp):
                 reg_loss = _registration_image_loss(source, target, source_to_target_img, target_to_source_img,
                                                     pos_field, neg_field, lam_sim, lam_smooth)
                 totals['img_loss'] += reg_loss.item()

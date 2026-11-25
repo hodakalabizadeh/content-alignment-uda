@@ -61,7 +61,7 @@ def main():
         val_loader = DataLoader(val_set, batch_size=d["batch_size"], shuffle=True, drop_last=d["val_drop_last"],
                                 pin_memory=True)
         reg = build_registration(data.SHAPE, data.CHANNELS, cfg["ca"]["int_steps"])
-        reg.load_state_dict(torch.load(ca_checkpoint, map_location=device))
+        reg.load_state_dict(torch.load(ca_checkpoint, map_location=device, weights_only=True))
         seg = build_segmenter(data.SHAPE, data.CHANNELS)
         optimiser = torch.optim.AdamW(seg.parameters(), lr=d["lr"])
         scheduler = torch.optim.lr_scheduler.ReduceLROnPlateau(optimiser, mode="min", factor=0.5,

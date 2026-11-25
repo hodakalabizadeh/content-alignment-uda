@@ -11,7 +11,7 @@ TARGET images (one per half); it is logged only and never used for model selecti
 import numpy as np
 import surface_distance as s_d
 import torch
-from torch.cuda.amp import autocast
+from torch.amp import autocast
 from tqdm import tqdm
 
 from ..models.segmentation import SegmentationUNet
@@ -32,7 +32,7 @@ def _halves(x):
 def _aligned_batch(batch, reg_model, device, amp):
     """Source image and label warped to the target by the frozen CA model, plus the target image and label."""
     source, target, source_label, target_label = (t.to(device).float() for t in batch)
-    with torch.no_grad(), autocast(enabled=amp):  # eval mode: the label is warped with nearest neighbour
+    with torch.no_grad(), autocast('cuda', enabled=amp):  # eval mode: the label is warped with nearest neighbour
         source_to_target_img, _, source_to_target_label, _, _ = reg_model(source, target, source_label)
     return source_to_target_img, source_to_target_label, target, target_label
 
@@ -72,7 +72,7 @@ def train_segmenter_epoch(seg_model, reg_model, dataloader, optim, loss_func, sc
         img, label, _, _ = _aligned_batch(batch, reg_model, device, amp)
 
         optim.zero_grad()
-        with autocast(enabled=amp):
+        with autocast('cuda', enabled=amp):
             _, loss = _segment(seg_model, loss_func, img, label, split_hemispheres)
         scaler.scale(loss).backward()
         scaler.step(optim)
@@ -100,7 +100,7 @@ def validate_segmenter(seg_model, reg_model, dataloader, loss_func, device, spli
         for batch in dataloader:
             batches += 1
             img, label, target, target_label = _aligned_batch(batch, reg_model, device, amp)
-            with autocast(enabled=amp):
+            with autocast('cuda', enabled=amp):
                 pred, loss = _segment(seg_model, loss_func, img, label, split_hemispheres)
                 totals['loss'] += loss.item()
 

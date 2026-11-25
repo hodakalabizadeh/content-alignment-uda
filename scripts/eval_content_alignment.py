@@ -53,7 +53,7 @@ def main():
     for record in records:
         fold = record["fold"]
         np.random.seed(args.seed)  # the same random source/target pairing for every fold
-        model.load_state_dict(torch.load(run_dir / f"ca_fold{fold}.pt", map_location=device))
+        model.load_state_dict(torch.load(run_dir / f"ca_fold{fold}.pt", map_location=device, weights_only=True))
         target_labels, warped_labels = register(model, loader, device, amp=c["amp"])
         m = segmentation_metrics(target_labels, warped_labels)
         print(f"Fold {fold}: validation loss {record['best_val_loss']:.4f}, min DSC = {np.min(m['dsc'])}, "
